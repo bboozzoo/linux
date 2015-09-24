@@ -369,4 +369,14 @@ static inline void ledtrig_cpu(enum cpu_led_event evt)
 }
 #endif
 
+#ifdef CONFIG_LEDS_TRIGGER_DEVICE
+extern void ledtrig_dev_add(dev_t dev);
+extern void ledtrig_dev_del(dev_t dev);
+extern void ledtrig_dev_activity(dev_t dev);
+#else
+static inline void ledtrig_dev_add(dev_t dev) {}
+static inline void ledtrig_dev_del(dev_t dev) {}
+static inline void ledtrig_dev_activity(dev_t dev) {}
+#endif
+
 #endif		/* __LINUX_LEDS_H_INCLUDED */
