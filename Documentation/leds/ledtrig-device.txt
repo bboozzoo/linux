@@ -1,0 +1,35 @@
+Device Activity LED Trigger
+==========================
+
+This is a LED trigger useful for signaling an activity on a given
+device identified by it's MKDEV(major, minor). A typical use case
+would be debugging of a device or a driver on an embedded board,
+patching up trivial electronic hardware design deficiencies in
+software or just plain desire to indicate activity on a certain
+device.
+
+Internally, a instance of a trigger is created and registered with LED
+triggers for every device added via ledtrig_dev_add() call. The
+triggers are named in the following manner:
+
+         `dev-<major>:<minor>`
+
+And can be selected from under /sys/class/leds/*/trigger. A device
+activity is explicitly indicated by calling ledtrig_dev_activity() for
+a registered device.
+
+The driver also creates a set of debugfs entries under
+/sys/kernel/debug/ledtrig-dev, these are:
+
+  devices - cat'ing will produce a list of currently registered
+            devices
+
+  register - echo'ing <major>:<minor> will create a trigger for this
+             device (note, you still need to add at least
+             ledtrig_dev_activity() hook)
+
+  unregister - echo'ing <major>:<minor> will delete a trigger for this
+               device
+
+  trigger - echo'ing <major>:<minor> will fire the trigger for this
+            device

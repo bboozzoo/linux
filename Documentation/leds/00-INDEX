@@ -20,3 +20,6 @@ ledtrig-oneshot.txt
 	- One-shot LED trigger for both sporadic and dense events.
 ledtrig-transient.txt
 	- LED Transient Trigger, one shot timer activation.
+ledtrig-device.txt
+        - LED Device Activity Trigger for indicating an activity
+          on a device
