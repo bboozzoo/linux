@@ -3268,6 +3268,11 @@ struct device *tty_register_device_attr(struct tty_driver *driver,
 	if (retval)
 		goto error;
 
+#ifdef CONFIG_LEDS_TRIGGER_DEVICE
+	/* only register for serial devices */
+	if (driver->type == TTY_DRIVER_TYPE_SERIAL)
+		ledtrig_dev_add(devt);
+#endif
 	return dev;
 
 error:
@@ -3293,6 +3298,9 @@ EXPORT_SYMBOL_GPL(tty_register_device_attr);
 
 void tty_unregister_device(struct tty_driver *driver, unsigned index)
 {
+#ifdef CONFIG_LEDS_TRIGGER_DEVICE
+	ledtrig_dev_del(MKDEV(driver->major, driver->minor_start) + index);
+#endif
 	device_destroy(tty_class,
 		MKDEV(driver->major, driver->minor_start) + index);
 	if (!(driver->flags & TTY_DRIVER_DYNAMIC_ALLOC)) {
