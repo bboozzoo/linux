@@ -16,7 +16,10 @@
 #include <linux/delay.h>
 #include <linux/module.h>
 #include <linux/ratelimit.h>
-
+#ifdef CONFIG_LEDS_TRIGGER_DEVICE
+#include <linux/device.h>
+#include <linux/leds.h>
+#endif
 
 #define MIN_TTYB_SIZE	256
 #define TTYB_ALIGN_MASK	255
@@ -444,6 +447,11 @@ receive_buf(struct tty_struct *tty, struct tty_buffer *head, int count)
 		if (count)
 			disc->ops->receive_buf(tty, p, f, count);
 	}
+
+#ifdef CONFIG_LEDS_TRIGGER_DEVICE
+	if (tty->dev)
+		ledtrig_dev_activity(tty->dev->devt);
+#endif
 	return count;
 }
 
