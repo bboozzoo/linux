@@ -92,6 +92,7 @@ GPATH
 GRTAGS
 GSYMS
 GTAGS
+gtags.files
 
 # id-utils files
 ID
